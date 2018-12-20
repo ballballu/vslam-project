@@ -1,5 +1,5 @@
 # Vslam-project
-## notic
+## notice
 * plateform hasee mini pc
 * password:robot223
 * run the gui software: xslam_viewer.run
