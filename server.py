@@ -43,7 +43,7 @@ while True:
         else:
             print('语音模式:'+ text)
             received = '语音模式:'+text[1]
-    with open('received.txt','w') as f:
-        f.write(received)
+        with open('received.txt','w') as f:
+            f.write(received)
 
 conn.close()
