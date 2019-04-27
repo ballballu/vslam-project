@@ -10,6 +10,7 @@
 
 
 * 	receiver.py 里用到了thulac作为分词工具用下面命令安装
-        ```
-		sudo pip install thulac
-		```
+
+    ```
+	sudo pip install thulac
+	```
