@@ -18,21 +18,32 @@ print('Connected by', addr)
 while True:  
     raw_data = conn.recv(10240)  
     if not raw_data: break  
+
     #conn.sendall(data)#把接收到数据原封不动的发送回去  
     #print('Received', repr(raw_data))
+
     if  b'text' in raw_data and b'from' in raw_data:
+
         data = raw_data[0:raw_data.find(b'}', 1) + 1]
         a=data[data.index(b'{'):].decode("utf8")
         #print(a)
         text = json.loads(a)["text"]
         if 'B' in text:
-            print('按键模式: '+text[1])
+            print('按键模式:'+text[1])
+            received = '按键模式:'+text[1]
         elif 'J' in text:
-            print('摇杆模式: '+text[1])
+            print('摇杆模式:'+text[1])
+            received = '摇杆模式:'+text[1]
         elif 'G' in text:
-            print('重力模式: '+text[1])
+            print('重力模式:'+text[1])
+            received = '重力模式:'+text[1]
         elif 'F' in text:
-            print('路径模式: '+text[1])
+            print('路径模式:'+text[1])
+            received = '路径模式:'+text[1]
         else:
-            print('语音: '+ text)
+            print('语音模式:'+ text)
+            received = '语音模式:'+text[1]
+    with open('received.txt','w') as f:
+        f.write(received)
+
 conn.close()
