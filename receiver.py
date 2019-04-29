@@ -1,18 +1,16 @@
+# coding=utf-8
 import os
 import thulac
 import time
-thu = thulac.thulac()
-
-distance=[]
-direction=[]
-destination = []
-key_words=['教室','实验室','走廊','客厅','厨房']
+import socket
 
 ''' 
+    每个controller：
     读取 received.txt的原始内容
     输出为 command.txt 
     地点模式 A address_code1 address_code2...
     方向前进模式 D direction_code1 distance1 direction_code2 distance2....
+    如果语音中只有单个
     direction_code: 1-forward  3-backward 4-left 2-right
     address_code: 教室-1, 实验室-2,  走廊-3, 客厅-4, 厨房-5
 
@@ -22,10 +20,12 @@ key_words=['教室','实验室','走廊','客厅','厨房']
 
 def getcommand():
     if os.access("received.txt",os.F_OK):
-        f = open("received.txt")
-        r_data = f.read()
-        f.close()
-        os.remove("received.txt")
+        with open('received.txt', 'r') as f1:
+            r_data = f1.read()
+
+        #这里还没试过能不能成功在ubuntu下删除文件
+        #os.remove("received.txt")
+
         if '语音' in r_data:
             Mode = 'SPEECH'
             data = r_data[5:]
@@ -56,6 +56,10 @@ def speech_control(data):
         dis_command = ""
         des_command = ""
         command = ""
+        distance = []
+        direction = []
+        destination = []
+
         for i in range(len(words)):
             #提取出要走的方向和距离
             if words[i][0] in key_words:
@@ -101,8 +105,10 @@ def speech_control(data):
             print('无法执行的指令')
             command = '无法执行的指令'
 
-        with open('command.txt','w') as f:
+        with open('Z:/command.txt','w') as f:
             f.write(command)
+        conn.send(command.encode())
+        
 
 
 # def joystick_control(data)
@@ -131,8 +137,19 @@ def Controller():
 
 
 if __name__ == '__main__':
+    s = socket.socket() 
+    host = socket.gethostname() 
+    port = 12306               
+    s.bind((host, port))
+    thu = thulac.thulac()
+    s.listen(5)
+    conn, addr = s.accept()     
+    print ('address: ', addr)
+    key_words=['教室','实验室','走廊','客厅','厨房']
+
     while(1):
         Controller()
         time.sleep(0.2)
+    conn.close()
 
         
