@@ -1,3 +1,4 @@
+# coding=utf-8
 #server.py  
 import socket  
 import json
@@ -38,12 +39,21 @@ while True:
             print('重力模式:'+text[1])
             received = '重力模式:'+text[1]
         elif 'F' in text:
-            print('路径模式:'+text[1])
-            received = '路径模式:'+text[1]
+            print('路径模式:'+text[1:])
+            received = '路径模式:'+text[1:]
         else:
             print('语音模式:'+ text)
-            received = '语音模式:'+text[1]
+            received = '语音模式:'+text
         with open('received.txt','w') as f:
             f.write(received)
 
 conn.close()
+''' 
+    H:200
+    0 200; 340 560厕所
+    1080 200; 670 810厨房
+    0 860; 345 1210仓库
+    670 1120； 1080 1920卧室
+    345 1210；0 1920书房
+
+'''
